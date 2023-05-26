@@ -21,10 +21,6 @@ export class DataService {
     return of(this.users);
   }
 
-  getBooking() : Observable<Array<Booking>> {
-    return of(this.bookings);
-  }
-
   updateUser(user: User) : Observable<User> {
     const originalUser= this.users.find(u => u.id === user.id);
     // @ts-ignore
@@ -87,6 +83,54 @@ export class DataService {
     return of(null);
   }
 
+  getBookings(date: string) : Observable<Array<Booking>> {
+    return of(this.bookings.filter(b => b.date === date));
+  }
+
+  getBooking(id: number) : Observable<Booking> {
+    // @ts-ignore
+    return of(this.bookings.find(b => b.id === id));
+  }
+
+  addBooking(newBooking: Booking): Observable<Booking> {
+    let id = 0;
+    for (const booking of this.bookings) {
+      if (booking.id > id) id = booking.id;
+    }
+    newBooking.id = id + 1;
+    this.bookings.push(newBooking);
+    return of(newBooking);
+  }
+
+  saveBooking(booking: Booking): Observable<Booking> {
+    const existingBooking = this.bookings.find(b => b.id === booking.id);
+    // @ts-ignore
+    existingBooking.date = booking.date;
+    // @ts-ignore
+    existingBooking.startTime = booking.startTime;
+    // @ts-ignore
+    existingBooking.endTime = booking.endTime;
+    // @ts-ignore
+    existingBooking.title = booking.title;
+    // @ts-ignore
+    existingBooking.layout = booking.layout;
+    // @ts-ignore
+    existingBooking.room = booking.room;
+    // @ts-ignore
+    existingBooking.user = booking.user;
+    // @ts-ignore
+    existingBooking.participants = booking.participants;
+    // @ts-ignore
+    return of(existingBooking);
+  }
+
+  deleteBooking(id: number): Observable<any> {
+    const booking = this.bookings.find(b => b.id === id);
+    // @ts-ignore
+    this.bookings.splice(this.bookings.indexOf(booking), 1);
+    return of(null);
+  }
+
   constructor() {
     this.rooms = new Array<Room>();
     const room1 = new Room();
@@ -138,7 +182,7 @@ export class DataService {
     booking1.layout = Layout.THEATER;
     booking1.title = 'For best day of your life'
     booking1.date = formatDate(new Date(), 'yyyy-MM-dd', 'en-GB');
-    booking1.startTime = '9:00';
+    booking1.startTime = '09:00';
     booking1.endTime = '21:00';
     booking1.participants = 2;
 
