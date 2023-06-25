@@ -14,6 +14,7 @@ import { UserEditComponent } from './admin/users/user-edit/user-edit.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import { RoomEditComponent } from './admin/rooms/room-edit/room-edit.component';
 import { BookingEditComponent } from './calendar/booking-edit/booking-edit.component';
+import {HttpClientModule} from "@angular/common/http";
 
 const routes: Routes = [
   {path : 'admin/users', component : UsersComponent},
@@ -43,6 +44,7 @@ const routes: Routes = [
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,
+    HttpClientModule,
     RouterModule.forRoot(routes)
   ],
   providers: [],

@@ -33,12 +33,20 @@
             ]
           },
           "configurations": {
+            "local": {
+              "fileReplacements": [
+                {
+                  "replace": "src/app/data.service.ts",
+                  "with": "src/app/data.service.local.ts"
+                }
+              ]
+            },
             "production": {
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kb",
-                  "maximumError": "1mb"
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
                 },
                 {
                   "type": "anyComponentStyle",
@@ -70,6 +78,9 @@
           "configurations": {
             "production": {
               "browserTarget": "RoomBookingClient:build:production"
+            },
+            "local": {
+              "browserTarget": "RoomBookingClient:build:local"
             },
             "development": {
               "browserTarget": "RoomBookingClient:build:development"

@@ -4,6 +4,7 @@ import {Booking} from "../model/Booking";
 import {ActivatedRoute, Router} from "@angular/router";
 import {FormResetService} from "../form-reset.service";
 import {formatDate} from "@angular/common";
+import {User} from "../model/User";
 
 @Component({
   selector: 'app-calendar',
@@ -19,6 +20,17 @@ export class CalendarComponent implements OnInit{
               private router: Router) {
   }
   ngOnInit(): void {
+    this.dataService.getUser(13)
+      .subscribe(
+      (next) => {
+        console.log(next);
+        console.log(typeof next);
+
+      }
+    )
+
+
+
     this.route.queryParams.subscribe(
       params => {
         this.selectedDate = params['date'];
