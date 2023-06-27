@@ -13,6 +13,9 @@ export class RoomsComponent implements OnInit {
   action: string;
   rooms: Array<Room>;
   selectedRoom : Room;
+  loadingData = true;
+  message: string = 'Please wait...';
+  reloadAttempts = 0;
 
   constructor(private dataService: DataService,
               private route: ActivatedRoute,
@@ -20,12 +23,31 @@ export class RoomsComponent implements OnInit {
               private formResetService: FormResetService) {
   }
 
-  ngOnInit(): void {
+  loadData() {
     this.dataService.getRooms().subscribe(
       (next) => {
         this.rooms = next;
+        this.loadingData = false;
+        this.processUrlParams();
+      },
+      (error) =>  {
+        if (error.status === 402) {
+          this.message = 'Sorry - you need to pay to use this application. ';
+        } else {
+          this.reloadAttempts++;
+          if (this.reloadAttempts <= 10) {
+            this.message = 'Sorry, something went wrong. Trying again... please wait. ';
+            this.loadData();
+          } else {
+            this.message = 'Sorry, something went wrong. Please, contact support. ';
+          }
+        }
+        console.log('error', error);
       }
     );
+  }
+
+  processUrlParams() {
     this.route.queryParams.subscribe(
       params => {
         // @ts-ignore
@@ -43,6 +65,10 @@ export class RoomsComponent implements OnInit {
         }
       }
     );
+  }
+
+  ngOnInit(): void {
+    this.loadData();
   }
 
   setRoom(id: number) {

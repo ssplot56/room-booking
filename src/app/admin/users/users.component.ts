@@ -14,6 +14,9 @@ export class UsersComponent implements OnInit {
   users: Array<User>;
   selectedUser: User;
   action: string;
+  loadingData = true;
+  message = 'Please wait...';
+  reloadAttempts = 0;
 
   constructor(private dataService: DataService,
               private route: ActivatedRoute,
@@ -21,13 +24,31 @@ export class UsersComponent implements OnInit {
               private formResetService: FormResetService) {
   }
 
-  ngOnInit(): void {
+  loadData() {
     this.dataService.getUsers().subscribe(
       (next) => {
         this.users = next;
+        this.loadingData = false;
+        this.processUrlParams();
+      },
+      error => {
+        if (error.status === 402) {
+          this.message = 'Sorry - you need to pay to use this application.';
+        } else {
+          this.reloadAttempts++;
+          if (this.reloadAttempts <= 10) {
+            this.message = 'Sorry, something went wrong. Trying again... please wait.';
+            this.loadData();
+          } else {
+            this.message = 'Sorry, something went wrong. Please, contact support.';
+          }
+        }
+        console.log('error', error);
       }
     );
+  }
 
+  processUrlParams() {
     this.route.queryParams.subscribe(
       params => {
         const id = params['id'];
@@ -38,6 +59,10 @@ export class UsersComponent implements OnInit {
         }
       }
     )
+  }
+
+  ngOnInit(): void {
+    this.loadData();
   }
 
   setUser(id: number) {

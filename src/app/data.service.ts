@@ -24,13 +24,19 @@ export class DataService {
       )
   }
 
-  getUser(id: number): Observable<User> {
-    return this.http.get<User>(environment.restUrl + '/api/users/' + id)
-      .pipe(
-        map(data => {
-          return User.fromHttp(data);
-        })
-      );
+  updateRoom(room: Room) : Observable<Room> {
+    // @ts-ignore
+    return of(null);
+  }
+
+  addRoom(newRoom: Room) : Observable<Room> {
+    // @ts-ignore
+    return of(null);
+  }
+
+  deleteRoom(id: number): Observable<any> {
+    // @ts-ignore
+    return of(null);
   }
 
   getUsers(): Observable<Array<User>> {
@@ -52,21 +58,6 @@ export class DataService {
   }
 
   addUser(newUser: User, password: String) : Observable<User> {
-    // @ts-ignore
-    return of(null);
-  }
-
-  updateRoom(room: Room) : Observable<Room> {
-    // @ts-ignore
-    return of(null);
-  }
-
-  addRoom(newRoom: Room) : Observable<Room> {
-    // @ts-ignore
-    return of(null);
-  }
-
-  deleteRoom(id: number): Observable<any> {
     // @ts-ignore
     return of(null);
   }
