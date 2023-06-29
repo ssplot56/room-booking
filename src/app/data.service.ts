@@ -53,8 +53,7 @@ export class DataService {
   }
 
   updateUser(user: User) : Observable<User> {
-    // @ts-ignore
-    return of(null);
+    return this.http.put<User>(environment.restUrl + '/api/users/' + user.id, user)
   }
 
   addUser(newUser: User, password: String) : Observable<User> {
